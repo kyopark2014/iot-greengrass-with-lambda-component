@@ -1,14 +1,4 @@
 # CDK로 Greengrass에 Lambda component 배포
 
-This is a blank project for CDK development with TypeScript.
+[Local Publisher 생성](https://github.com/kyopark2014/iot-greengrass-with-ipc-client-v2)을 참조하여 publisher를 생성합니다. 
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
-
-## Useful commands
-
-* `npm run build`   compile typescript to js
-* `npm run watch`   watch for changes and compile
-* `npm run test`    perform the jest unit tests
-* `cdk deploy`      deploy this stack to your default AWS account/region
-* `cdk diff`        compare deployed stack with current state
-* `cdk synth`       emits the synthesized CloudFormation template
