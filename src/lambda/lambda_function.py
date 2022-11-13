@@ -1,11 +1,9 @@
 import json
 
-def lambda_handler(event, context):  
-    print('## EVENT') 
-    print(event) 
+def handler(event, context):  
+    print('Event : ', json.dumps(event))
     
-    # TODO implement
     return {
         'statusCode': 200,
-        'body': json.dumps('Hello from Lambda!')
+        'body': json.dumps(event)
     }
