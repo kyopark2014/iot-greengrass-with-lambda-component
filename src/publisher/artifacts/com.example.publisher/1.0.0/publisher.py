@@ -39,7 +39,8 @@ def publish_binary_message_to_topic(ipc_client, topic, message):
     # publish_message = PublishMessage(binary_message=binary_message)
 
     # for Json
-    publish_message = PublishMessage(json_message=message)
+    jMessage = JsonMessage(message)
+    publish_message = PublishMessage(json_message=jMessage)
     ipc_client.publish_to_topic(topic=topic, publish_message=publish_message)
 
 if __name__ == '__main__':
