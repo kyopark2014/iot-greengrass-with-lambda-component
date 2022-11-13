@@ -1,4 +1,4 @@
-# Welcome to your CDK TypeScript project
+# CDK로 Greengrass에 Lambda component 배포
 
 This is a blank project for CDK development with TypeScript.
 
