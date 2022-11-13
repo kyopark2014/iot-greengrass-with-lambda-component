@@ -4,6 +4,44 @@ Lambda 함수는 AW의 대표적인 서버리스 서비스로 시스템에 유�
 
 Lambda의 기능을 디바이스로 가져와서 수행한다면, 비용을 줄이고, offline 상황에서 디바이스의 동작을 좀 더 원할하게 할 수 있습니다. 이를 위해서 Greengrass에서는 Lambda를 component로 등록하여 사용할 수 있도록 하고 있습니다. 
 
+## Lambda Component의 동작
+
+Greengrass의 Lambda componet는 직접 IPC 통신을 하지 않고, 기존 Lambda와 같이 Event 수신하여 필요한 처리를 수행합니다. 따라서 topic을 아래와 같이 "eventSources"를 통해 지정하는데, type을 PUB_SUB로 지정하면 local component들 사이에서 메시지를 교환하고, IOT_CORE로 하면 IoT Core에 PUBSUB 방식으로 통신을 할 수 있습니다. 
+
+아래는 [cdk-lambda-component-stack.ts](https://github.com/kyopark2014/iot-greengrass-with-lambda-component/blob/main/cdk-lambda-component/lib/cdk-lambda-component-stack.ts)에서 lambda component에 해당하는 부분입니다. 
+
+```python
+    const cfnComponentVersion_lambda = new greengrassv2.CfnComponentVersion(this, 'LambdaCfnComponentVersion', {
+      lambdaFunction: {
+        componentLambdaParameters: {
+          environmentVariables: {},
+          eventSources: [{
+            topic: 'local/topic',
+            type: 'PUB_SUB',   // 'PUB_SUB'|'IOT_CORE'
+          }],
+          inputPayloadEncodingType: 'json',   // 'json'|'binary',
+          linuxProcessParams: {
+            containerParams: {
+              memorySizeInKb: 16384,
+              mountRoSysfs: false,
+            },
+            isolationMode: 'GreengrassContainer',  // 'GreengrassContainer'|'NoContainer',
+          },
+          maxIdleTimeInSeconds: 60,
+          maxInstancesCount: 100,
+          maxQueueSize: 1000,
+          pinned: true,
+          statusTimeoutInSeconds: 60,
+          timeoutInSeconds: 3,
+        }, 
+        componentName: 'com.example.lambda',  // optional
+        componentVersion: version+'.0.0',  // optional
+        lambdaArn: lambdaArn+':'+version,
+      },
+    }); 
+```    
+
+
 ## Greengrass 설치
 
 [greengrass-installation](https://github.com/kyopark2014/iot-greengrass/blob/main/preparation.md#greengrass-installation)에 따라 greengrass 디바이스에 greengrass를 설치하고 core device로 등록합니다.
