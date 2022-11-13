@@ -1,5 +1,9 @@
 # CDK로 Greengrass에 Lambda component 배포하여 이용하기
 
+Lambda 함수는 AW의 대표적인 서버리스 서비스로 시스템에 유연함을 제공하여, 다양한 어플리케이션에서 널리 사용되고 있습니다. IoT 같은 디바이스들은 Lambda API를 호출하는 방식으로 필요한 동작을 수행할 수 있습니다. 하지만, 이 경우에 디바이스 숫자들이 많아지면 서버 증설과 비용에 대해 충분히 검토하여야 합니다.
+
+Lambda의 기능을 디바이스로 가져와서 수행한다면, 비용을 줄이고, offline 상황에서 디바이스의 동작을 좀 더 원할하게 할 수 있습니다. 이를 위해서 Greengrass에서는 Lambda를 component로 등록하여 사용할 수 있도록 하고 있습니다. 
+
 ## Greengrass 설치
 
 [greengrass-installation](https://github.com/kyopark2014/iot-greengrass/blob/main/preparation.md#greengrass-installation)에 따라 greengrass 디바이스에 greengrass를 설치하고 core device로 등록합니다.
