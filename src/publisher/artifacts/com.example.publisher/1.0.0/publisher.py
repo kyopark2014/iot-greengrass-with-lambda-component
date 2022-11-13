@@ -22,7 +22,7 @@ def main():
 
         try:
             while True: 
-                publish_binary_message_to_topic(ipc_client, topic, json.dumps(message))
+                publish_binary_message_to_topic(ipc_client, topic, message)
                 print('msg: ', json.dumps(message))
                 time.sleep(5)
         except InterruptedError:
