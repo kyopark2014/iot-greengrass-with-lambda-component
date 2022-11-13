@@ -22,8 +22,8 @@ def main():
 
         try:
             while True: 
-                publish_binary_message_to_topic(ipc_client, topic, json.dump(message))
-                print('msg: ', json.dump(message))
+                publish_binary_message_to_topic(ipc_client, topic, json.dumps(message))
+                print('msg: ', json.dumps(message))
                 time.sleep(5)
         except InterruptedError:
             print('Publisher interrupted.')                
