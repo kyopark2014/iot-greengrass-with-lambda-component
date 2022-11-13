@@ -9,7 +9,18 @@
 
 ## 실행 결과 
 
-설치된 component 정보는 아래와 같이 확인합니다. "com.example.publisher"와 "com.example.lambda"가 정상적으로 설치된것을 볼수 있습니다. 특이점은 별도 deployment를 설정하지 않았음에도 아래와 같이 "aws.greengrass.LambdaLauncher", "aws.greengrass.TokenExchangeService", "DeploymentService", "aws.greengrass.LambdaManager"이 설치된 것을 알 수 있습니다. 
+수신된 메시지는 아래와 같습니다. "com.example.publisher"가 전송된 json 파일이 정상적으로 "com.example.lambda"로 수신되고 있음을 알 수 있습니다.
+
+```java
+2022-11-13T17:15:43.327Z [INFO] (pool-2-thread-48) com.example.lambda: lambda_function.py:4,Event : . {serviceInstance=0, serviceName=com.example.lambda, currentState=RUNNING}
+2022-11-13T17:15:43.327Z [INFO] (pool-2-thread-48) com.example.lambda: lambda_function.py:4, . {serviceInstance=0, serviceName=com.example.lambda, currentState=RUNNING}
+2022-11-13T17:15:43.327Z [INFO] (pool-2-thread-48) com.example.lambda: lambda_function.py:4,{"key1": "value1", "key2": "value2", "key3": "value3"}. {serviceInstance=0, serviceName=com.example.lambda, currentState=RUNNING}
+2022-11-13T17:15:48.332Z [INFO] (pool-2-thread-48) com.example.lambda: lambda_function.py:4,Event : . {serviceInstance=0, serviceName=com.example.lambda, currentState=RUNNING}
+2022-11-13T17:15:48.332Z [INFO] (pool-2-thread-48) com.example.lambda: lambda_function.py:4, . {serviceInstance=0, serviceName=com.example.lambda, currentState=RUNNING}
+2022-11-13T17:15:48.333Z [INFO] (pool-2-thread-48) com.example.lambda: lambda_function.py:4,{"key1": "value1", "key2": "value2", "key3": "value3"}. {serviceInstance=0, serviceName=com.example.lambda, currentState=RUNNING}
+```
+
+이때, 설치된 component 정보는 아래와 같이 확인합니다. "com.example.publisher"와 "com.example.lambda"가 정상적으로 설치된것을 볼수 있습니다. 특이점은 별도 deployment를 설정하지 않았음에도 아래와 같이 "aws.greengrass.LambdaLauncher", "aws.greengrass.TokenExchangeService", "DeploymentService", "aws.greengrass.LambdaManager"이 설치된 것을 알 수 있습니다. 
 
 ```java
 sudo /greengrass/v2/bin/greengrass-cli component list
@@ -51,14 +62,3 @@ Component Name: aws.greengrass.LambdaManager
     Configuration: {"getResultTimeoutInSecond":"60"}    
 ```
 
-
-수신된 메시지는 아래와 같습니다. 
-
-```java
-2022-11-13T17:15:43.327Z [INFO] (pool-2-thread-48) com.example.lambda: lambda_function.py:4,Event : . {serviceInstance=0, serviceName=com.example.lambda, currentState=RUNNING}
-2022-11-13T17:15:43.327Z [INFO] (pool-2-thread-48) com.example.lambda: lambda_function.py:4, . {serviceInstance=0, serviceName=com.example.lambda, currentState=RUNNING}
-2022-11-13T17:15:43.327Z [INFO] (pool-2-thread-48) com.example.lambda: lambda_function.py:4,{"key1": "value1", "key2": "value2", "key3": "value3"}. {serviceInstance=0, serviceName=com.example.lambda, currentState=RUNNING}
-2022-11-13T17:15:48.332Z [INFO] (pool-2-thread-48) com.example.lambda: lambda_function.py:4,Event : . {serviceInstance=0, serviceName=com.example.lambda, currentState=RUNNING}
-2022-11-13T17:15:48.332Z [INFO] (pool-2-thread-48) com.example.lambda: lambda_function.py:4, . {serviceInstance=0, serviceName=com.example.lambda, currentState=RUNNING}
-2022-11-13T17:15:48.333Z [INFO] (pool-2-thread-48) com.example.lambda: lambda_function.py:4,{"key1": "value1", "key2": "value2", "key3": "value3"}. {serviceInstance=0, serviceName=com.example.lambda, currentState=RUNNING}
-```
