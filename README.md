@@ -1,11 +1,9 @@
 # CDK로 Greengrass에 Lambda component 배포하여 이용하기
 
-AWS Lambda 함수는 대표적인 서버리스 서비스로 운영에 대한 부담을 줄이고 유연한 시스템을 구성할 수 있어서, 다양한 어플리케이션에서 널리 사용되고 있습니다. IoT와 같이 다수의 디바이스들이 Lambda로 구성되는 API를 호출하는 방식으로 필요한 동작을 수행할 수 있습니다. 하지만, 이 경우에 디바이스 숫자들이 많아지면 서버 증설과 비용에 대해 충분히 검토하여야 합니다.
+AWS Lambda 함수는 대표적인 서버리스 서비스로 운영에 대한 부담을 줄이고 유연한 시스템을 구성할 수 있어서, 다양한 어플리케이션에서 널리 사용되고 있습니다. IoT와 같이 다수의 디바이스들이 Lambda로 구성되는 API를 호출하는 방식으로 필요한 동작을 수행할 수 있습니다. IoT가 API서버를 통해 Restful API를 사용할 경우에, 디바이스의 숫자들이 많아지면 서버 증설과 비용에 대한 부담이 증가할 수 있습니다. 따라서, Lambda의 기능을 디바이스로 가져와서 수행한다면, 비용을 줄이고, offline 상황에서 디바이스의 동작을 좀 더 원할하게 할 수 있습니다. 이를 위해서 Greengrass에서는 Lambda를 component로 등록하여 사용할 수 있도록 하고 있습니다. 
 
-Lambda의 기능을 디바이스로 가져와서 수행한다면, 비용을 줄이고, offline 상황에서 디바이스의 동작을 좀 더 원할하게 할 수 있습니다. 이를 위해서 Greengrass에서는 Lambda를 component로 등록하여 사용할 수 있도록 하고 있습니다. 
-
-전체적인 구성도는 아래와 같습니다. 
-
+전체적인 구성도는 아래와 같습니다. Lambda는 IoT Device Management를 이용해 IoT Greengrass에 Lambda component로 복제되어 배포되며, AWS Cloud의 Lambda와 동일하게 event 기반으로 동작합니다. IoT Greengrass에 있는 Local component는 API를 호출하기 위해 Cloud로 요청을 하지 않고 Local에 있는 Lambda component로 IPC 통신방식으로 요청을 수행하므로 서버로 인입되는 트래픽을 오프로딩(offloading)할 수 있습니다. [AWS CDK](https://github.com/kyopark2014/technical-summary/blob/main/cdk-introduction.md)는 대표적인 IaC(Infrastructure as Code) 툴로서, AWS Cloud에 Lambda를 배포하고, 동일한 Lambda 기능을 IoT Greengrass에 component로 배포할 수 있습니다. 
+ㅣ
 ![image](https://user-images.githubusercontent.com/52392004/201556871-4dd91c9e-04b9-40f3-a9fb-b38ce7c5e6ff.png)
 
 
