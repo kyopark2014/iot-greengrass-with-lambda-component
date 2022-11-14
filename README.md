@@ -113,7 +113,7 @@ Component Name: aws.greengrass.LambdaManager
 
 ## Reference
 
-[(Run AWS Lambda functions)(https://docs.aws.amazon.com/greengrass/v2/developerguide/run-lambda-functions.html)
+[Run AWS Lambda functions](https://docs.aws.amazon.com/greengrass/v2/developerguide/run-lambda-functions.html)
 
 [Publish/subscribe local messages](https://docs.aws.amazon.com/greengrass/v2/developerguide/ipc-publish-subscribe.html)
 
