@@ -111,3 +111,10 @@ Component Name: aws.greengrass.LambdaManager
     Configuration: {"getResultTimeoutInSecond":"60"}    
 ```
 
+## Reference
+
+[(Run AWS Lambda functions)(https://docs.aws.amazon.com/greengrass/v2/developerguide/run-lambda-functions.html)
+
+[Publish/subscribe local messages](https://docs.aws.amazon.com/greengrass/v2/developerguide/ipc-publish-subscribe.html)
+
+[Use the AWS IoT Device SDK to communicate with the Greengrass nucleus, other components, and AWS IoT Core](https://docs.aws.amazon.com/greengrass/v2/developerguide/interprocess-communication.html)
