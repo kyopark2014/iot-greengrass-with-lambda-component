@@ -51,7 +51,7 @@ Greengrass의 Lambda componet는 직접 IPC 통신을 하지 않고, 기존 Lamb
 
 [greengrass-installation](https://github.com/kyopark2014/iot-greengrass/blob/main/preparation.md#greengrass-installation)에 따라 greengrass 디바이스에 greengrass를 설치하고 core device로 등록합니다.
 
-## CDK로 component 배포 
+## CDK로 Lambda 및 Local Component 배포 
 
 [CDK로 Greengrass에 Lambda component 배포](https://github.com/kyopark2014/iot-greengrass-with-lambda-component/blob/main/cdk-lambda-component/)에서는 CDK에서 Lambda compoent를 구성하고 배포하는 방식에 대해 설명하고 있습니다. 
 
