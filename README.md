@@ -111,6 +111,11 @@ Component Name: aws.greengrass.LambdaManager
     Configuration: {"getResultTimeoutInSecond":"60"}    
 ```
 
+### Greengrass Commands와 Memo
+
+유용한 [Greengrass 명령어와 중요한 메모들](https://github.com/kyopark2014/iot-greengrass/blob/main/greengrass-commands.md)를 정리하였습니다.
+
+
 ## Reference
 
 [Run AWS Lambda functions](https://docs.aws.amazon.com/greengrass/v2/developerguide/run-lambda-functions.html)
