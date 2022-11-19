@@ -13,7 +13,7 @@ AWS Lambda 함수는 대표적인 서버리스 서비스로 운영에 대한 부
 
 Greengrass의 Lambda componet는 직접 IPC 통신을 하지 않고, 기존 Lambda와 같이 Event 수신하여 필요한 처리를 수행합니다. 따라서 topic을 아래와 같이 "eventSources"를 통해 지정하는데, type을 PUB_SUB로 지정하면 local component들 사이에서 메시지를 교환하고, IOT_CORE로 하면 IoT Core에 PUBSUB 방식으로 통신을 할 수 있습니다. 
 
-아래는 [cdk-lambda-component-stack.ts](https://github.com/kyopark2014/iot-greengrass-with-lambda-component/blob/main/cdk-lambda-component/lib/cdk-lambda-component-stack.ts)에서 lambda component에서 Local PUBSUB으로 설정하는 부분입니다. 
+아래는 [cdk-lambda-component-stack.ts](https://github.com/kyopark2014/iot-greengrass-with-lambda-component/blob/main/cdk-lambda-component/lib/cdk-lambda-component-stack.ts)의 lambda component에서 Local PUBSUB으로 설정하는 부분입니다. 
 
 ```java
 lambdaFunction: {
