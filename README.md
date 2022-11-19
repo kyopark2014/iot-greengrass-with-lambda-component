@@ -95,15 +95,9 @@ const cfnComponentVersion_lambda = new greengrassv2.CfnComponentVersion(this, 'L
 const cfnDeployment = new greengrassv2.CfnDeployment(this, 'MyCfnDeployment', {
   targetArn: `arn:aws:iot:ap-northeast-2:`+accountId+`:thing/`+deviceName,    
   components: {
-    "com.example.publisher": {
-      componentVersion: "1.0.0", 
-    },
     "com.example.lambda": {
       componentVersion: version+".0.0", 
     },
-    "aws.greengrass.Cli": {
-      componentVersion: "2.8.1", 
-    }
   },
   deploymentName: 'deployment-components',
   deploymentPolicies: {
