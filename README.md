@@ -15,14 +15,14 @@ Greengrass의 Lambda componet는 직접 IPC 통신을 하지 않고, 기존 Lamb
 
 아래는 [cdk-lambda-component-stack.ts](https://github.com/kyopark2014/iot-greengrass-with-lambda-component/blob/main/cdk-lambda-component/lib/cdk-lambda-component-stack.ts)에서 lambda component에서 Local PUBSUB으로 설정하는 부분입니다. 
 
-```python
-      lambdaFunction: {
-        componentLambdaParameters: {
-          environmentVariables: {},
-          eventSources: [{
-            topic: 'local/topic',
-            type: 'PUB_SUB',   // 'PUB_SUB'|'IOT_CORE'
-          }],
+```java
+lambdaFunction: {
+  componentLambdaParameters: {
+    environmentVariables: {},
+    eventSources: [{
+      topic: 'local/topic',
+      type: 'PUB_SUB',   // 'PUB_SUB'|'IOT_CORE'
+    }],
 ```    
 
 
