@@ -51,10 +51,91 @@ Greengrass의 Lambda componet는 직접 IPC 통신을 하지 않고, 기존 Lamb
 
 [greengrass-installation](https://github.com/kyopark2014/iot-greengrass/blob/main/preparation.md#greengrass-installation)에 따라 greengrass 디바이스에 greengrass를 설치하고 core device로 등록합니다.
 
+
 ## CDK로 Lambda 및 Local Component 배포 
 
 [CDK로 Greengrass에 Lambda component 배포](https://github.com/kyopark2014/iot-greengrass-with-lambda-component/blob/main/cdk-lambda-component/)에서는 CDK에서 Lambda compoent를 구성하고 배포하는 방식에 대해 설명하고 있습니다. 
 
+Lambda component를 사용하기 위해서는 먼저 AWS Cloud에 아래처럼 Lambda를 생성하고, Version과 Alias를 설정합니다. 
+
+```java
+// Create greengrass Lambda
+const ggLambda = new lambda.Function(this, "lambda-greengrass", {
+  description: 'lambda function',
+  runtime: lambda.Runtime.PYTHON_3_8, 
+  code: lambda.Code.fromAsset("../src/lambda"), 
+  functionName: 'lambda-greengrass',
+  handler: "lambda_function.handler", 
+  timeout: cdk.Duration.seconds(3),
+}); 
+
+// version
+const version = ggLambda.currentVersion;
+const alias = new lambda.Alias(this, 'LambdaAlias', {
+  aliasName: 'Dev',
+  version,
+});
+```
+
+이때 생성된 LambdaArn을 가지고 아래와 같이 Greengrass에 Lambda Component를 등록할 수 있습니다. 
+
+```java
+const cfnComponentVersion_lambda = new greengrassv2.CfnComponentVersion(this, 'LambdaCfnComponentVersion', {
+  lambdaFunction: {
+    componentLambdaParameters: {
+      environmentVariables: {},
+      eventSources: [{
+        topic: 'local/topic',
+        type: 'PUB_SUB',   // 'PUB_SUB'|'IOT_CORE'
+      }],
+      inputPayloadEncodingType: 'json',   // 'json'|'binary',
+      linuxProcessParams: {
+        containerParams: {
+          memorySizeInKb: 16384,
+          mountRoSysfs: false,
+        },
+        isolationMode: 'GreengrassContainer',  // 'GreengrassContainer'|'NoContainer',
+      },
+      maxIdleTimeInSeconds: 60,
+      maxInstancesCount: 100,
+      maxQueueSize: 1000,
+      pinned: true,
+      statusTimeoutInSeconds: 60,
+      timeoutInSeconds: 3,
+    }, 
+    componentName: 'com.example.lambda',  // optional
+    componentVersion: version+'.0.0',  // optional
+    lambdaArn: lambdaArn+':'+version,
+  },
+}); 
+```    
+
+이후, 아래처럼 Deployment에 lambda component를 추가합니다.
+
+```java
+const cfnDeployment = new greengrassv2.CfnDeployment(this, 'MyCfnDeployment', {
+  targetArn: `arn:aws:iot:ap-northeast-2:`+accountId+`:thing/`+deviceName,    
+  components: {
+    "com.example.publisher": {
+      componentVersion: "1.0.0", 
+    },
+    "com.example.lambda": {
+      componentVersion: version+".0.0", 
+    },
+    "aws.greengrass.Cli": {
+      componentVersion: "2.8.1", 
+    }
+  },
+  deploymentName: 'deployment-components',
+  deploymentPolicies: {
+    componentUpdatePolicy: {
+      action: 'NOTIFY_COMPONENTS', // NOTIFY_COMPONENTS | SKIP_NOTIFY_COMPONENTS
+      timeoutInSeconds: 60,
+    },
+    failureHandlingPolicy: 'ROLLBACK',  // ROLLBACK | DO_NOTHING
+  },
+});   
+```    
 
 ## 실행 결과 
 
