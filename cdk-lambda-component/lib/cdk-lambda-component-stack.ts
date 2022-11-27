@@ -12,6 +12,7 @@ export class CdkLambdaComponentStack extends cdk.Stack {
 
     const deviceName = 'GreengrassCore-18163f7ac3e'
     const accountId = cdk.Stack.of(this).account
+    const bucketName = "gg-depolyment-storage"
 
     // Create greengrass Lambda
     const ggLambda = new lambda.Function(this, "lambda-greengrass", {
@@ -56,10 +57,43 @@ export class CdkLambdaComponentStack extends cdk.Stack {
       value: fnUrl.url,
       description: 'The endpoint of Lambda Function URL',
     });
+ 
+    // check the value of lambdaArn
+    new cdk.CfnOutput(this, 'lambdaArn', {
+      value: ggLambda.functionArn,
+      description: 'lambdaArn',
+    });
+
+    // check the version of lambda
+    new cdk.CfnOutput(this, 'version', {
+      value: version.version,
+      description: 'The version of lambda',
+    });   
+
+    // s3 deployment
+    const s3deploy = new s3Deployment(scope, "s3-deployment", bucketName)        
+
+    // create local component
+    const local = new localComponent(scope, "local-component", bucketName)   
+    local.addDependency(s3deploy);
+
+    // create lambda component - com.example.lambda
+    const lambdaDeployment = new lambdaComponent(scope, "lambda-component", version.version, ggLambda.functionArn)   
+    lambdaDeployment.addDependency(local);
+
+    // deploy components - com.example.publisher
+    const deployment = new componentDeployment(scope, "deployments", version.version, accountId, deviceName)   
+    deployment.addDependency(lambdaDeployment);
+  }
+}
+
+export class s3Deployment extends cdk.Stack {
+  constructor(scope: Construct, id: string, bucketName: string, props?: cdk.StackProps) {    
+    super(scope, id, props);
 
     // S3 for artifact storage
     const s3Bucket = new s3.Bucket(this, "gg-depolyment-storage",{
-      bucketName: "gg-depolyment-storage",
+      bucketName: bucketName,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
@@ -77,34 +111,13 @@ export class CdkLambdaComponentStack extends cdk.Stack {
     new cdk.CfnOutput(this, 's3Path', {
       value: 's3://'+s3Bucket.bucketName,
       description: 'The path of s3',
-    });
+    });    
 
     // copy web application files into s3 bucket
     new s3Deploy.BucketDeployment(this, "UploadArtifact", {
       sources: [s3Deploy.Source.asset("../src")],
       destinationBucket: s3Bucket,
     });
-
-    // check the value of lambdaArn
-    new cdk.CfnOutput(this, 'lambdaArn', {
-      value: ggLambda.functionArn,
-      description: 'lambdaArn',
-    });
-
-    // check the version of lambda
-    new cdk.CfnOutput(this, 'version', {
-      value: version.version,
-      description: 'The version of lambda',
-    });   
-
-    // create lambda component - com.example.lambda
-    new lambdaComponent(scope, "lambda-component", version.version, ggLambda.functionArn)   
-
-    // create local component
-    new localComponent(scope, "local-component", s3Bucket.bucketName)   
-
-    // deploy components - com.example.publisher
-    new componentDeployment(scope, "deployments", version.version, accountId, deviceName)   
   }
 }
 
@@ -208,7 +221,7 @@ export class componentDeployment extends cdk.Stack {
           componentVersion: version+".0.0", 
         },
         "aws.greengrass.Cli": {
-          componentVersion: "2.8.1", 
+          componentVersion: "2.9.1", 
         }
       },
       deploymentName: 'deployment-components',
